@@ -6,14 +6,87 @@ It is not a generalize tool that can be reused but a specific storage system for
 
 ## Folder Structure
 
-The workspace contains two folders by default, where:
+```
+storageman/
+├── back/           # Spring Boot backend (Java 21)
+│   ├── src/main/java/              # Main source code
+│   ├── src/test/java/              # Test sources
+│   └── pom.xml                     # Maven configuration
+├── front/          # React + TypeScript frontend
+│   ├── e2e/                        # E2E tests (Playwright)
+│   ├── src/                        # Frontend source code
+│   ├── playwright.config.ts        # E2E test configuration
+│   └── package.json                # NPM dependencies
+└── README.md       # This file
+```
 
-- `src/main/java`: the folder to maintain main sources
-- `src/main/test`: the folder to maintain test sources
+## Quick Start
 
-Meanwhile, the compiled output files will be generated in the `target` folder by default.
+### Backend Setup
 
-> If you want to customize the folder structure, open `pom.xml` and update the related settings there.
+```bash
+cd back
+mvn clean install
+mvn spring-boot:run
+```
+
+API will be available at `http://localhost:8080`
+- **Swagger UI**: http://localhost:8080/swagger-ui.html
+- **OpenAPI Docs**: http://localhost:8080/v3/api-docs
+
+### Frontend Setup
+
+```bash
+cd front
+pnpm install
+pnpm dev
+```
+
+App will be available at `http://localhost:5173`
+
+## Testing
+
+### Frontend E2E Tests (Playwright)
+
+```bash
+cd front
+
+# First-time setup
+npx playwright install
+
+# Run tests
+pnpm test:e2e              # Headless mode
+pnpm test:e2e:ui           # UI mode (recommended)
+pnpm test:e2e:headed       # See browser
+pnpm test:e2e:debug        # Debug mode
+pnpm test:e2e:report       # View report
+```
+
+**Features:**
+- ✅ Multi-browser testing (Chrome, Firefox, Safari, Mobile)
+- ✅ Auto-start dev server
+- ✅ Screenshots on failure
+- ✅ Trace viewer for debugging
+
+### Backend Tests (JUnit 5)
+
+```bash
+cd back
+
+# Run all tests
+mvn test
+
+# Run specific test
+mvn test -Dtest=AuthControllerTest
+
+# Generate coverage report
+mvn clean verify
+```
+
+**Test Types:**
+- **Unit Tests**: Controller, Service, Repository layers
+- **Integration Tests**: Full REST API testing with REST Assured
+- **Test Database**: H2 in-memory for fast, isolated tests
 
 ## Dependency Management
 

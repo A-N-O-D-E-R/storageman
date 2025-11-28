@@ -11,6 +11,7 @@ A modern React + TypeScript frontend for the StorageMan cloud storage management
 - **TanStack Query (React Query)** - Server state management
 - **Axios** - HTTP client
 - **Orval** - OpenAPI client generator
+- **Playwright** - E2E testing framework
 
 ## Prerequisites
 
@@ -72,10 +73,90 @@ pnpm preview     # Preview production build
 pnpm lint        # Run ESLint
 ```
 
+## Testing
+
+### E2E Tests with Playwright
+
+#### First-time Setup
+
+Install Playwright browsers:
+```bash
+npx playwright install
+```
+
+#### Run E2E Tests
+
+```bash
+# Run all tests in headless mode
+pnpm test:e2e
+
+# Run tests with UI mode (recommended for development)
+pnpm test:e2e:ui
+
+# Run tests in headed mode (see browser)
+pnpm test:e2e:headed
+
+# Debug tests step by step
+pnpm test:e2e:debug
+
+# View test report
+pnpm test:e2e:report
+```
+
+#### Test Structure
+
+```
+e2e/
+├── app.spec.ts           # Basic app functionality tests
+└── example-api.spec.ts   # API integration tests
+```
+
+#### Writing Tests
+
+Playwright tests are located in the `e2e/` directory. Example test:
+
+```typescript
+import { test, expect } from '@playwright/test';
+
+test('should display the app title', async ({ page }) => {
+  await page.goto('/');
+  const title = page.getByRole('heading', { name: /StorageMan/i });
+  await expect(title).toBeVisible();
+});
+```
+
+#### Test Configuration
+
+Configure tests in `playwright.config.ts`:
+- **Base URL**: `http://localhost:5173`
+- **Browsers**: Chromium, Firefox, WebKit, Mobile Chrome, Mobile Safari
+- **Auto-start dev server**: Tests automatically start Vite
+- **Screenshots**: On failure
+- **Trace**: On retry
+
+#### CI/CD Integration
+
+Tests are configured for CI with:
+- Parallel execution disabled
+- 2 retries on failure
+- HTML report generation
+
+#### Debugging Tests
+
+Use the Playwright Inspector:
+```bash
+pnpm test:e2e:debug
+```
+
+Or use VS Code Playwright extension for integrated debugging.
+
 ## Project Structure
 
 ```
 front/
+├── e2e/                         # E2E tests
+│   ├── app.spec.ts             # Basic app tests
+│   └── example-api.spec.ts     # API integration tests
 ├── src/
 │   ├── api/
 │   │   ├── axios-instance.ts    # Axios configuration with interceptors
@@ -84,6 +165,7 @@ front/
 │   ├── App.tsx                  # Main app component
 │   ├── main.tsx                 # App entry point
 │   └── index.css                # Tailwind directives
+├── playwright.config.ts         # Playwright configuration
 ├── orval.config.ts              # Orval configuration
 ├── tailwind.config.js           # Tailwind configuration
 ├── vite.config.ts               # Vite configuration
