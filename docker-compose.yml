@@ -3,9 +3,9 @@ services:
   db:
     image: postgres:15
     environment:
-      POSTGRES_USER: chem
-      POSTGRES_PASSWORD: chem123
-      POSTGRES_DB: chemdb
+      POSTGRES_USER: storage
+      POSTGRES_PASSWORD: storage123
+      POSTGRES_DB: storagedb
     ports:
       - "5432:5432"
 
@@ -13,9 +13,9 @@ services:
     build: ./backend
     depends_on: [db]
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/chemdb
-      SPRING_DATASOURCE_USERNAME: chem
-      SPRING_DATASOURCE_PASSWORD: chem123
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/storagedb
+      SPRING_DATASOURCE_USERNAME: storage
+      SPRING_DATASOURCE_PASSWORD: storage123
     ports:
       - "8080:8080"
 

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.anode.storage.dto.LoginRequest;
 import com.anode.storage.dto.TokenResponse;
-import com.anode.storage.entity.User;
+import com.anode.storage.entity.core.User;
 import com.anode.storage.repository.UserRepository;
 import com.anode.storage.security.JwtService;
 

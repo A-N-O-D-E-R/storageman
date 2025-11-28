@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.anode.storage.entity.ChemicalProduct;
+import com.anode.storage.entity.core.StorageItem;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,11 +12,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class EmailService {
 
-    public void sendExpirationWarning(List<ChemicalProduct> products) {
-        log.info("Sending expiration warning for {} products", products.size());
+    public void sendExpirationWarning(List<StorageItem> items) {
+        log.info("Sending expiration warning for {} items", items.size());
         // Email sending logic would go here
-        for (ChemicalProduct product : products) {
-            log.info("Product {} expires on {}", product.getName(), product.getExpirationDate());
+        for (StorageItem item : items) {
+            log.info("Item {} ({}) expires on {}",
+                item.getName(),
+                item.getProductType().getDisplayName(),
+                item.getExpirationDate());
         }
     }
 }

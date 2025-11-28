@@ -1,0 +1,42 @@
+package com.anode.storage.repository;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.anode.storage.entity.core.ItemStatus;
+import com.anode.storage.entity.core.StorageItem;
+
+public interface StorageItemRepository extends JpaRepository<StorageItem, Long> {
+
+    // Find by reference
+    List<StorageItem> findByReferenceId(Long referenceId);
+
+    // Find by status
+    List<StorageItem> findByStatus(ItemStatus status);
+
+    // Find available items
+    @Query("SELECT i FROM StorageItem i WHERE i.status = 'AVAILABLE'")
+    List<StorageItem> findAllAvailable();
+
+    // Find by batch/lot number
+    List<StorageItem> findByBatchInfoBatchNumber(String batchNumber);
+
+    List<StorageItem> findByBatchInfoLotNumber(String lotNumber);
+
+    // Find by location
+    List<StorageItem> findByLocationId(Long locationId);
+
+    // Find expiring items
+    @Query("SELECT i FROM StorageItem i WHERE i.batchInfo.expirationDate BETWEEN ?1 AND ?2")
+    List<StorageItem> findByExpirationDateBetween(LocalDate start, LocalDate end);
+
+    // Find expired but not disposed
+    @Query("SELECT i FROM StorageItem i WHERE i.batchInfo.expirationDate < CURRENT_DATE AND i.status != 'EXPIRED' AND i.status != 'DISPOSED'")
+    List<StorageItem> findExpiredNotMarked();
+
+    // Find items for a specific reference and status
+    List<StorageItem> findByReferenceIdAndStatus(Long referenceId, ItemStatus status);
+}

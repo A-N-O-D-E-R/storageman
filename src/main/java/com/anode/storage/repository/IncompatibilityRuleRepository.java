@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.anode.storage.entity.IncompatibilityRule;
+import com.anode.storage.entity.safety.IncompatibilityRule;
 
 public interface IncompatibilityRuleRepository extends JpaRepository<IncompatibilityRule, Long> {
 
